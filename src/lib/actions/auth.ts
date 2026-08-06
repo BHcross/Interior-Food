@@ -48,7 +48,9 @@ export async function signUp(
     };
   }
 
-  redirect(role === "merchant" ? "/painel/loja" : "/");
+  if (role === "merchant") redirect("/painel/loja");
+  if (role === "courier") redirect("/entregador");
+  redirect("/");
 }
 
 export async function signIn(
@@ -75,7 +77,9 @@ export async function signIn(
     .eq("id", user?.id ?? "")
     .single();
 
-  redirect(profile?.role === "merchant" ? "/painel" : "/");
+  if (profile?.role === "merchant") redirect("/painel");
+  if (profile?.role === "courier") redirect("/entregador");
+  redirect("/");
 }
 
 export async function signOut() {

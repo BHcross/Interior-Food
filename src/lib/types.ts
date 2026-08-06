@@ -1,4 +1,4 @@
-export type Role = "customer" | "merchant";
+export type Role = "customer" | "merchant" | "courier";
 
 export type OrderStatus =
   | "pending"
@@ -46,6 +46,8 @@ export interface Merchant {
   opening_hours: string | null;
   delivery_fee: number;
   status: "pending" | "approved";
+  latitude: number | null;
+  longitude: number | null;
   created_at: string;
 }
 
@@ -72,13 +74,23 @@ export interface Order {
   id: string;
   customer_id: string;
   merchant_id: string;
+  courier_id: string | null;
   status: OrderStatus;
   delivery_address: string;
+  delivery_latitude: number | null;
+  delivery_longitude: number | null;
   payment_method: PaymentMethod;
   notes: string | null;
   delivery_fee: number;
   total: number;
   created_at: string;
+  updated_at: string;
+}
+
+export interface CourierLocation {
+  courier_id: string;
+  latitude: number;
+  longitude: number;
   updated_at: string;
 }
 

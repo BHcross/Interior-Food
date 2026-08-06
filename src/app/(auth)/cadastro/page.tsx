@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, Lock, Mail, Phone, Store, User } from "lucide-react";
+import { Bike, CheckCircle2, Lock, Mail, Phone, Store, User } from "lucide-react";
 import { signUp, type AuthFormState } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,7 @@ const initialState: AuthFormState = {};
 
 export default function CadastroPage() {
   const [state, formAction, pending] = useActionState(signUp, initialState);
-  const [role, setRole] = useState<"customer" | "merchant">("customer");
+  const [role, setRole] = useState<"customer" | "merchant" | "courier">("customer");
 
   return (
     <div className="flex flex-1 items-center justify-center bg-gradient-to-b from-accent/60 to-background px-4 py-12">
@@ -49,11 +49,15 @@ export default function CadastroPage() {
                   <TabsList className="w-full">
                     <TabsTrigger value="customer" className="flex-1 gap-1.5">
                       <User className="size-3.5" />
-                      Sou cliente
+                      Cliente
                     </TabsTrigger>
                     <TabsTrigger value="merchant" className="flex-1 gap-1.5">
                       <Store className="size-3.5" />
-                      Sou lojista
+                      Lojista
+                    </TabsTrigger>
+                    <TabsTrigger value="courier" className="flex-1 gap-1.5">
+                      <Bike className="size-3.5" />
+                      Entregador
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>

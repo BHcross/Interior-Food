@@ -8,6 +8,8 @@ export interface CreateOrderInput {
   merchantId: string;
   items: CartItem[];
   deliveryAddress: string;
+  deliveryLatitude?: number | null;
+  deliveryLongitude?: number | null;
   paymentMethod: PaymentMethod;
   notes?: string;
 }
@@ -85,6 +87,8 @@ export async function createOrder(input: CreateOrderInput): Promise<CreateOrderR
       customer_id: user.id,
       merchant_id: merchant.id,
       delivery_address: input.deliveryAddress,
+      delivery_latitude: input.deliveryLatitude ?? null,
+      delivery_longitude: input.deliveryLongitude ?? null,
       payment_method: input.paymentMethod,
       notes: input.notes || null,
       delivery_fee: merchant.delivery_fee,

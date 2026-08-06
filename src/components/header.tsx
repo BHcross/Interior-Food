@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ClipboardList, LogOut, Store } from "lucide-react";
+import { Bike, ClipboardList, LogOut, Store } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { signOut } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
@@ -38,6 +38,13 @@ export async function Header() {
             <Button variant="ghost" render={<Link href="/painel" />} nativeButton={false}>
               <Store />
               Painel da loja
+            </Button>
+          )}
+
+          {user && profile?.role === "courier" && (
+            <Button variant="ghost" render={<Link href="/entregador" />} nativeButton={false}>
+              <Bike />
+              Entregas
             </Button>
           )}
 

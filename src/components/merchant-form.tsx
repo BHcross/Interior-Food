@@ -1,17 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { saveMerchant, type ActionResult } from "@/lib/actions/merchant";
 import type { Merchant } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { AddressSearchInput } from "@/components/address-search-input";
+import { LocationPickerMap } from "@/components/location-picker-map";
 
 const initialState: ActionResult = {};
 
 export function MerchantForm({ merchant }: { merchant: Merchant | null }) {
   const [state, formAction, pending] = useActionState(saveMerchant, initialState);
+  const [latitude, setLatitude] = useState<number | null>(merchant?.latitude ?? null);
+  const [longitude, setLongitude] = useState<number | null>(merchant?.longitude ?? null);
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
@@ -51,6 +55,30 @@ export function MerchantForm({ merchant }: { merchant: Merchant | null }) {
           defaultValue={merchant?.delivery_fee ?? 0}
           required
         />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label>Localização da loja no mapa</Label>
+        <p className="text-sm text-muted-foreground">
+          Busque o endereço ou clique/arraste o pino no mapa para ajustar. Isso é o que
+          aparece pro cliente e pro entregador.
+        </p>
+        <AddressSearchInput
+          onSelect={(result) => {
+            setLatitude(result.latitude);
+            setLongitude(result.longitude);
+          }}
+        />
+        <LocationPickerMap
+          latitude={latitude}
+          longitude={longitude}
+          onChange={(lat, lng) => {
+            setLatitude(lat);
+            setLongitude(lng);
+          }}
+        />
+        <input type="hidden" name="latitude" value={latitude ?? ""} />
+        <input type="hidden" name="longitude" value={longitude ?? ""} />
       </div>
 
       {state.error && <p className="text-sm text-destructive">{state.error}</p>}

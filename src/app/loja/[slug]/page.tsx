@@ -3,6 +3,7 @@ import { Clock, MapPin, Store as StoreIcon, Truck } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Category, Merchant, Product } from "@/lib/types";
 import { AddToCartButton } from "@/components/add-to-cart-button";
+import { StoreMap } from "@/components/store-map";
 import { Badge } from "@/components/ui/badge";
 
 export default async function LojaPage(props: PageProps<"/loja/[slug]">) {
@@ -71,6 +72,17 @@ export default async function LojaPage(props: PageProps<"/loja/[slug]">) {
       </div>
 
       <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
+        {merchant.latitude !== null && merchant.longitude !== null && (
+          <div className="mb-8">
+            <h2 className="mb-3 text-lg font-medium">Localização</h2>
+            <StoreMap
+              latitude={merchant.latitude}
+              longitude={merchant.longitude}
+              label={merchant.name}
+            />
+          </div>
+        )}
+
         {(products ?? []).length === 0 ? (
           <p className="text-muted-foreground">Esta loja ainda não cadastrou produtos.</p>
         ) : (

@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { AddressSearchInput } from "@/components/address-search-input";
+import { LocationPickerMap } from "@/components/location-picker-map";
 import {
   Card,
   CardContent,
@@ -23,6 +25,9 @@ export default function CheckoutPage() {
   const { merchantId, merchantName, items } = useCartStore();
   const [deliveryFee, setDeliveryFee] = useState<number | null>(null);
   const [address, setAddress] = useState("");
+  const [deliveryLat, setDeliveryLat] = useState<number | null>(null);
+  const [deliveryLng, setDeliveryLng] = useState<number | null>(null);
+  const [showMap, setShowMap] = useState(false);
   const [notes, setNotes] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("dinheiro");
   const [error, setError] = useState<string | null>(null);
@@ -64,6 +69,8 @@ export default function CheckoutPage() {
         merchantId: merchantId!,
         items,
         deliveryAddress: address,
+        deliveryLatitude: deliveryLat,
+        deliveryLongitude: deliveryLng,
         paymentMethod,
         notes,
       });
@@ -93,6 +100,34 @@ export default function CheckoutPage() {
               placeholder="Rua, número, bairro, ponto de referência"
               required
             />
+            {!showMap ? (
+              <button
+                type="button"
+                onClick={() => setShowMap(true)}
+                className="w-fit text-sm font-medium text-primary underline-offset-4 hover:underline"
+              >
+                Marcar localização exata no mapa (opcional)
+              </button>
+            ) : (
+              <div className="flex flex-col gap-2 pt-1">
+                <AddressSearchInput
+                  placeholder="Buscar endereço no mapa..."
+                  onSelect={(result) => {
+                    setDeliveryLat(result.latitude);
+                    setDeliveryLng(result.longitude);
+                  }}
+                />
+                <LocationPickerMap
+                  latitude={deliveryLat}
+                  longitude={deliveryLng}
+                  onChange={(lat, lng) => {
+                    setDeliveryLat(lat);
+                    setDeliveryLng(lng);
+                  }}
+                  height={200}
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col gap-2">

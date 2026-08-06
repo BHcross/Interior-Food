@@ -3,8 +3,14 @@ import { createClient } from "@/lib/supabase/server";
 import type { Order, OrderItem } from "@/lib/types";
 import { OrderStatusLive } from "@/components/order-status-live";
 import { ClearCartIfMatches } from "@/components/clear-cart-if-matches";
+import { StoreMap } from "@/components/store-map";
+import { DeliveryTrackingMap } from "@/components/delivery-tracking-map";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+type OrderWithMerchant = Order & {
+  merchants: { name: string; latitude: number | null; longitude: number | null };
+};
 
 export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
   const { id } = await props.params;
@@ -12,9 +18,9 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
 
   const { data: order } = await supabase
     .from("orders")
-    .select("*, merchants(name)")
+    .select("*, merchants(name, latitude, longitude)")
     .eq("id", id)
-    .single<Order & { merchants: { name: string } }>();
+    .single<OrderWithMerchant>();
 
   if (!order) notFound();
 
@@ -32,6 +38,37 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
       <p className="mb-6 text-sm text-muted-foreground">Pedido #{order.id.slice(0, 8)}</p>
 
       <OrderStatusLive orderId={order.id} initialStatus={order.status} />
+
+      {order.courier_id && order.status === "out_for_delivery" ? (
+        <div className="mt-6">
+          <h2 className="mb-2 text-sm font-medium text-muted-foreground">
+            Acompanhe o entregador
+          </h2>
+          <DeliveryTrackingMap
+            courierId={order.courier_id}
+            merchantLatitude={order.merchants.latitude}
+            merchantLongitude={order.merchants.longitude}
+            merchantName={order.merchants.name}
+            deliveryLatitude={order.delivery_latitude}
+            deliveryLongitude={order.delivery_longitude}
+          />
+        </div>
+      ) : (
+        order.merchants.latitude !== null &&
+        order.merchants.longitude !== null && (
+          <div className="mt-6">
+            <h2 className="mb-2 text-sm font-medium text-muted-foreground">
+              Localização da loja
+            </h2>
+            <StoreMap
+              latitude={order.merchants.latitude}
+              longitude={order.merchants.longitude}
+              label={order.merchants.name}
+              height={180}
+            />
+          </div>
+        )
+      )}
 
       <Card className="mt-6">
         <CardHeader>
