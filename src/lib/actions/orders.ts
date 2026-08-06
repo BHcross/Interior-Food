@@ -113,6 +113,17 @@ export async function createOrder(input: CreateOrderInput): Promise<CreateOrderR
 }
 
 export async function updateOrderStatus(orderId: string, status: string) {
+  // A loja nunca marca como "entregue" diretamente — isso só pode
+  // acontecer pelo código de confirmação (entregador) ou pelo próprio
+  // cliente confirmando o recebimento. Evita golpe de marcar entregue
+  // sem o cliente ter recebido de verdade.
+  if (status === "delivered") {
+    return {
+      error:
+        "A entrega só pode ser confirmada pelo entregador (com o código) ou pelo cliente.",
+    };
+  }
+
   const supabase = await createClient();
   const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
   return { error: error?.message };
