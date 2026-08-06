@@ -45,9 +45,18 @@ export default async function LojaPage(props: PageProps<"/loja/[slug]">) {
       <div className="border-b bg-gradient-to-br from-primary/10 to-accent/40">
         <div className="mx-auto w-full max-w-3xl px-4 py-8">
           <div className="flex items-center gap-4">
-            <div className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-primary/15">
-              <StoreIcon className="size-6 text-primary" />
-            </div>
+            {merchant.logo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={merchant.logo_url}
+                alt={merchant.name}
+                className="size-14 shrink-0 rounded-xl object-cover"
+              />
+            ) : (
+              <div className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-primary/15">
+                <StoreIcon className="size-6 text-primary" />
+              </div>
+            )}
             <div>
               <h1 className="text-2xl font-semibold">{merchant.name}</h1>
               <p className="flex items-center gap-1 text-muted-foreground">

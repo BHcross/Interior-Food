@@ -48,6 +48,8 @@ export interface Merchant {
   status: "pending" | "approved";
   latitude: number | null;
   longitude: number | null;
+  logo_url: string | null;
+  delivery_mode: "platform" | "own";
   created_at: string;
 }
 

@@ -42,9 +42,18 @@ export default async function Home() {
             {merchants.map((merchant) => (
               <Link key={merchant.id} href={`/loja/${merchant.slug}`}>
                 <Card className="h-full gap-3 overflow-hidden pt-0 transition-all hover:-translate-y-0.5 hover:shadow-md">
-                  <div className="flex h-24 items-center justify-center bg-gradient-to-br from-primary/15 to-accent">
-                    <StoreIcon className="size-8 text-primary" />
-                  </div>
+                  {merchant.logo_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={merchant.logo_url}
+                      alt={merchant.name}
+                      className="h-24 w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-24 items-center justify-center bg-gradient-to-br from-primary/15 to-accent">
+                      <StoreIcon className="size-8 text-primary" />
+                    </div>
+                  )}
                   <CardContent className="flex flex-col gap-2">
                     <h2 className="font-semibold">{merchant.name}</h2>
                     <p className="flex items-center gap-1 text-sm text-muted-foreground">

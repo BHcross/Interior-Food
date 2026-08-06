@@ -42,6 +42,9 @@ export async function saveMerchant(
   const longitudeRaw = String(formData.get("longitude") ?? "").trim();
   const latitude = latitudeRaw ? Number(latitudeRaw) : null;
   const longitude = longitudeRaw ? Number(longitudeRaw) : null;
+  const logoUrl = String(formData.get("logoUrl") ?? "").trim() || null;
+  const deliveryModeRaw = String(formData.get("deliveryMode") ?? "platform");
+  const deliveryMode = deliveryModeRaw === "own" ? "own" : "platform";
 
   if (!name || !city) {
     return { error: "Nome da loja e cidade são obrigatórios." };
@@ -59,6 +62,8 @@ export async function saveMerchant(
         delivery_fee: deliveryFee,
         latitude,
         longitude,
+        logo_url: logoUrl,
+        delivery_mode: deliveryMode,
       })
       .eq("id", merchant.id);
     if (error) return { error: error.message };
@@ -82,6 +87,8 @@ export async function saveMerchant(
       delivery_fee: deliveryFee,
       latitude,
       longitude,
+      logo_url: logoUrl,
+      delivery_mode: deliveryMode,
     });
     if (error) return { error: error.message };
   }
