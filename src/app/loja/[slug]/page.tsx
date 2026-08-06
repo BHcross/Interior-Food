@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { Clock, MapPin, Store as StoreIcon, Truck } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Category, Merchant, Product } from "@/lib/types";
-import { AddToCartButton } from "@/components/add-to-cart-button";
 import { StoreMap } from "@/components/store-map";
+import { StoreMenu } from "@/components/store-menu";
 import { Badge } from "@/components/ui/badge";
 
 export default async function LojaPage(props: PageProps<"/loja/[slug]">) {
@@ -33,12 +33,6 @@ export default async function LojaPage(props: PageProps<"/loja/[slug]">) {
       .eq("available", true)
       .returns<Product[]>(),
   ]);
-
-  const uncategorized = (products ?? []).filter((p) => !p.category_id);
-  const groups = (categories ?? []).map((category) => ({
-    category,
-    products: (products ?? []).filter((p) => p.category_id === category.id),
-  }));
 
   return (
     <div>
@@ -92,69 +86,8 @@ export default async function LojaPage(props: PageProps<"/loja/[slug]">) {
           </div>
         )}
 
-        {(products ?? []).length === 0 ? (
-          <p className="text-muted-foreground">Esta loja ainda não cadastrou produtos.</p>
-        ) : (
-          <div className="flex flex-col gap-8">
-            {groups
-              .filter((g) => g.products.length > 0)
-              .map((group) => (
-                <section key={group.category.id}>
-                  <h2 className="mb-3 text-lg font-medium">{group.category.name}</h2>
-                  <div className="flex flex-col gap-3">
-                    {group.products.map((product) => (
-                      <ProductRow key={product.id} product={product} merchant={merchant} />
-                    ))}
-                  </div>
-                </section>
-              ))}
-
-            {uncategorized.length > 0 && (
-              <section>
-                <h2 className="mb-3 text-lg font-medium">Outros</h2>
-                <div className="flex flex-col gap-3">
-                  {uncategorized.map((product) => (
-                    <ProductRow key={product.id} product={product} merchant={merchant} />
-                  ))}
-                </div>
-              </section>
-            )}
-          </div>
-        )}
+        <StoreMenu merchant={merchant} categories={categories ?? []} products={products ?? []} />
       </div>
-    </div>
-  );
-}
-
-function ProductRow({ product, merchant }: { product: Product; merchant: Merchant }) {
-  return (
-    <div className="flex items-center justify-between gap-4 rounded-xl border bg-card p-3 shadow-sm">
-      {product.image_url ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={product.image_url}
-          alt={product.name}
-          className="h-16 w-16 shrink-0 rounded-lg object-cover"
-        />
-      ) : (
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-muted">
-          <StoreIcon className="size-5 text-muted-foreground" />
-        </div>
-      )}
-      <div className="flex flex-1 flex-col">
-        <span className="font-medium">{product.name}</span>
-        {product.description && (
-          <span className="text-sm text-muted-foreground">{product.description}</span>
-        )}
-        <span className="mt-1 font-medium text-primary">R$ {product.price.toFixed(2)}</span>
-      </div>
-      <AddToCartButton
-        merchantId={merchant.id}
-        merchantName={merchant.name}
-        productId={product.id}
-        name={product.name}
-        price={product.price}
-      />
     </div>
   );
 }
