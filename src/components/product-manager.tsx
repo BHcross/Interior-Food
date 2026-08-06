@@ -33,11 +33,9 @@ import { Badge } from "@/components/ui/badge";
 const NO_CATEGORY = "none";
 
 export function ProductManager({
-  merchantId,
   categories,
   products,
 }: {
-  merchantId: string;
   categories: Category[];
   products: Product[];
 }) {
@@ -65,7 +63,6 @@ export function ProductManager({
             <DialogTitle>{editing ? "Editar produto" : "Novo produto"}</DialogTitle>
           </DialogHeader>
           <ProductForm
-            merchantId={merchantId}
             categories={categories}
             product={editing}
             onSaved={() => setOpen(false)}
@@ -126,12 +123,10 @@ export function ProductManager({
 }
 
 function ProductForm({
-  merchantId,
   categories,
   product,
   onSaved,
 }: {
-  merchantId: string;
   categories: Category[];
   product: Product | null;
   onSaved: () => void;
@@ -151,7 +146,15 @@ function ProductForm({
 
     setUploading(true);
     const supabase = createClient();
-    const path = `${merchantId}/${crypto.randomUUID()}-${file.name}`;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error("Sua sessão expirou. Entre novamente para enviar a imagem.");
+      setUploading(false);
+      return;
+    }
+    const path = `${user.id}/${crypto.randomUUID()}-${file.name}`;
     const { error: uploadError } = await supabase.storage
       .from("product-images")
       .upload(path, file);

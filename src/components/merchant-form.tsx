@@ -31,7 +31,15 @@ export function MerchantForm({ merchant }: { merchant: Merchant | null }) {
 
     setUploadingLogo(true);
     const supabase = createClient();
-    const path = `logos/${crypto.randomUUID()}-${file.name}`;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error("Sua sessão expirou. Entre novamente para enviar a imagem.");
+      setUploadingLogo(false);
+      return;
+    }
+    const path = `${user.id}/${crypto.randomUUID()}-${file.name}`;
     const { error: uploadError } = await supabase.storage
       .from("product-images")
       .upload(path, file);

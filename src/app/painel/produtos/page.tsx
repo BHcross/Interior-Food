@@ -69,11 +69,7 @@ export default async function ProdutosPage() {
         <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
           Produtos
         </h2>
-        <ProductManager
-          merchantId={merchant.id}
-          categories={categories ?? []}
-          products={products ?? []}
-        />
+        <ProductManager categories={categories ?? []} products={products ?? []} />
       </section>
     </div>
   );

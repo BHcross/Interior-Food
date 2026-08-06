@@ -31,8 +31,8 @@ export async function signUp(
   if (!email || !password || !fullName) {
     return { error: "Preencha nome, e-mail e senha." };
   }
-  if (password.length < 6) {
-    return { error: "A senha precisa ter pelo menos 6 caracteres." };
+  if (password.length < 8) {
+    return { error: "A senha precisa ter pelo menos 8 caracteres." };
   }
 
   const supabase = await createClient();
@@ -130,8 +130,8 @@ export async function updatePassword(
   const password = String(formData.get("password") ?? "");
   const confirmPassword = String(formData.get("confirmPassword") ?? "");
 
-  if (password.length < 6) {
-    return { error: "A senha precisa ter pelo menos 6 caracteres." };
+  if (password.length < 8) {
+    return { error: "A senha precisa ter pelo menos 8 caracteres." };
   }
   if (password !== confirmPassword) {
     return { error: "As senhas não coincidem." };

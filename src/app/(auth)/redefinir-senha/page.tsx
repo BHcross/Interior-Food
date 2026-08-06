@@ -45,7 +45,7 @@ export default function RedefinirSenhaPage() {
                     name="password"
                     type="password"
                     required
-                    minLength={6}
+                    minLength={8}
                     autoComplete="new-password"
                     className="pl-8"
                   />
@@ -60,7 +60,7 @@ export default function RedefinirSenhaPage() {
                     name="confirmPassword"
                     type="password"
                     required
-                    minLength={6}
+                    minLength={8}
                     autoComplete="new-password"
                     className="pl-8"
                   />
