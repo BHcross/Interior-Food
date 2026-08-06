@@ -22,7 +22,11 @@ type OrderWithItems = Order & { order_items: OrderItem[] };
 function nextStatus(status: OrderStatus): OrderStatus | null {
   const i = ORDER_STATUS_FLOW.indexOf(status);
   if (i === -1 || i === ORDER_STATUS_FLOW.length - 1) return null;
-  return ORDER_STATUS_FLOW[i + 1];
+  const next = ORDER_STATUS_FLOW[i + 1];
+  // A loja não marca como "entregue" diretamente — só o entregador (com
+  // o código) ou o próprio cliente confirmam o recebimento.
+  if (next === "delivered") return null;
+  return next;
 }
 
 export function OrdersBoard({
@@ -100,7 +104,11 @@ export function OrdersBoard({
   }
 
   if (orders.length === 0) {
-    return <p className="text-muted-foreground">Nenhum pedido recebido ainda.</p>;
+    return (
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
+        <p className="text-muted-foreground">Nenhum pedido recebido ainda.</p>
+      </div>
+    );
   }
 
   return (
@@ -110,7 +118,7 @@ export function OrdersBoard({
         const isFinal = order.status === "delivered" || order.status === "cancelled";
 
         return (
-          <Card key={order.id}>
+          <Card key={order.id} className="shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-base">
                 Pedido #{order.id.slice(0, 8)}
@@ -154,6 +162,12 @@ export function OrdersBoard({
                   <OrderChat orderId={order.id} channel="merchant_courier" title="entregador" />
                 )}
               </div>
+
+              {order.status === "out_for_delivery" && (
+                <p className="text-sm text-muted-foreground">
+                  Aguardando confirmação da entrega pelo entregador ou pelo cliente.
+                </p>
+              )}
 
               {!isFinal && (
                 <div className="mt-2 flex gap-2">

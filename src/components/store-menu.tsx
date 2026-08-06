@@ -43,7 +43,7 @@ export function StoreMenu({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar no cardápio..."
-          className="rounded-full pl-9 pr-9"
+          className="h-11 rounded-full pl-9 pr-9 shadow-sm"
         />
         {query && (
           <Button
@@ -64,12 +64,14 @@ export function StoreMenu({
           Nenhum produto encontrado para &quot;{query}&quot;.
         </p>
       ) : (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-9">
           {groups
             .filter((g) => g.products.length > 0)
             .map((group) => (
               <section key={group.category.id}>
-                <h2 className="mb-3 text-lg font-medium">{group.category.name}</h2>
+                <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+                  {group.category.name}
+                </h2>
                 <div className="flex flex-col gap-3">
                   {group.products.map((product) => (
                     <ProductRow key={product.id} product={product} merchant={merchant} />
@@ -80,7 +82,9 @@ export function StoreMenu({
 
           {uncategorized.length > 0 && (
             <section>
-              <h2 className="mb-3 text-lg font-medium">Outros</h2>
+              <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+                Outros
+              </h2>
               <div className="flex flex-col gap-3">
                 {uncategorized.map((product) => (
                   <ProductRow key={product.id} product={product} merchant={merchant} />
@@ -96,7 +100,7 @@ export function StoreMenu({
 
 function ProductRow({ product, merchant }: { product: Product; merchant: Merchant }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-xl border bg-card p-3 shadow-sm">
+    <div className="flex items-center justify-between gap-4 rounded-xl border border-border/70 bg-card p-3.5 shadow-sm transition-shadow hover:shadow-md">
       {product.image_url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img

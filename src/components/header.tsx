@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bike, ClipboardList, LogOut, Store } from "lucide-react";
+import { Bike, ClipboardList, LogOut, ShieldCheck, Store } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { signOut } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
@@ -10,8 +10,8 @@ export async function Header() {
   const { user, profile } = await getCurrentUser();
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5 sm:py-4">
         <Link href="/" className="flex items-center gap-2">
           <LogoIcon className="size-8 text-primary" />
           <span className="leading-tight">
@@ -45,6 +45,13 @@ export async function Header() {
             <Button variant="ghost" render={<Link href="/entregador" />} nativeButton={false}>
               <Bike />
               Entregas
+            </Button>
+          )}
+
+          {user && profile?.role === "admin" && (
+            <Button variant="ghost" render={<Link href="/admin" />} nativeButton={false}>
+              <ShieldCheck />
+              Admin
             </Button>
           )}
 

@@ -83,7 +83,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto w-full max-w-2xl flex-1 px-4 py-8">
-      <h1 className="mb-1 text-2xl font-semibold">Finalizar pedido</h1>
+      <h1 className="mb-1 text-2xl font-semibold tracking-tight">Finalizar pedido</h1>
       <p className="mb-6 text-muted-foreground">{merchantName}</p>
 
       <div className="grid gap-6 sm:grid-cols-[1.2fr_1fr]">
@@ -136,10 +136,10 @@ export default function CheckoutPage() {
               <button
                 type="button"
                 onClick={() => setPaymentMethod("dinheiro")}
-                className={`flex flex-col items-center gap-1.5 rounded-xl border p-3 text-sm font-medium transition-colors ${
+                className={`flex flex-col items-center gap-1.5 rounded-xl border p-3.5 text-sm font-medium transition-all ${
                   paymentMethod === "dinheiro"
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "hover:bg-muted"
+                    ? "border-primary bg-primary/10 text-primary shadow-sm"
+                    : "border-border/70 hover:bg-muted"
                 }`}
               >
                 <Banknote className="size-5" />
@@ -148,10 +148,10 @@ export default function CheckoutPage() {
               <button
                 type="button"
                 onClick={() => setPaymentMethod("pix")}
-                className={`flex flex-col items-center gap-1.5 rounded-xl border p-3 text-sm font-medium transition-colors ${
+                className={`flex flex-col items-center gap-1.5 rounded-xl border p-3.5 text-sm font-medium transition-all ${
                   paymentMethod === "pix"
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "hover:bg-muted"
+                    ? "border-primary bg-primary/10 text-primary shadow-sm"
+                    : "border-border/70 hover:bg-muted"
                 }`}
               >
                 <QrCode className="size-5" />
@@ -186,7 +186,7 @@ export default function CheckoutPage() {
           </Button>
         </form>
 
-        <Card className="h-fit shadow-sm">
+        <Card className="h-fit shadow-sm sm:sticky sm:top-24">
           <CardHeader>
             <CardTitle className="text-base">Resumo</CardTitle>
           </CardHeader>

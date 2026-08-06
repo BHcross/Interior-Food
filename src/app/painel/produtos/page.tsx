@@ -6,7 +6,6 @@ import { CategoryManager } from "@/components/category-manager";
 import { ProductManager } from "@/components/product-manager";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 
 export default async function ProdutosPage() {
   const { user } = await getCurrentUser();
@@ -47,26 +46,31 @@ export default async function ProdutosPage() {
   ]);
 
   return (
-    <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Categorias</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <CategoryManager categories={categories ?? []} />
-        </CardContent>
-      </Card>
-
-      <Separator />
-
+    <div className="flex flex-col gap-8">
       <div>
-        <h2 className="mb-3 text-lg font-medium">Produtos</h2>
-        <ProductManager
-          merchantId={merchant.id}
-          categories={categories ?? []}
-          products={products ?? []}
-        />
+        <h1 className="text-2xl font-semibold tracking-tight">Cardápio</h1>
+        <p className="text-sm text-muted-foreground">
+          Organize as categorias e os produtos da sua loja.
+        </p>
       </div>
+
+      <section>
+        <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+          Categorias
+        </h2>
+        <Card className="shadow-sm">
+          <CardContent>
+            <CategoryManager categories={categories ?? []} />
+          </CardContent>
+        </Card>
+      </section>
+
+      <section>
+        <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+          Produtos
+        </h2>
+        <ProductManager categories={categories ?? []} products={products ?? []} />
+      </section>
     </div>
   );
 }

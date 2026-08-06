@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
 import type { Merchant } from "@/lib/types";
 import { MerchantForm } from "@/components/merchant-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function LojaPage() {
   const { user } = await getCurrentUser();
@@ -15,9 +15,10 @@ export default async function LojaPage() {
     .maybeSingle<Merchant>();
 
   return (
-    <Card>
+    <Card className="shadow-sm">
       <CardHeader>
         <CardTitle>Dados da loja</CardTitle>
+        <CardDescription>Essas informações aparecem para clientes e entregadores.</CardDescription>
       </CardHeader>
       <CardContent>
         <MerchantForm merchant={merchant} />

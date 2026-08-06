@@ -21,7 +21,7 @@ export default async function MeusPedidosPage() {
 
   return (
     <div>
-      <h1 className="mb-1 text-2xl font-semibold">Meus pedidos</h1>
+      <h1 className="mb-1 text-2xl font-semibold tracking-tight">Meus pedidos</h1>
       <p className="mb-6 text-muted-foreground">Acompanhe seus pedidos e veja o histórico.</p>
 
       {!orders || orders.length === 0 ? (
@@ -35,8 +35,8 @@ export default async function MeusPedidosPage() {
         <div className="flex flex-col gap-3">
           {orders.map((order) => (
             <Link key={order.id} href={`/pedido/${order.id}`}>
-              <Card className="transition-colors hover:border-primary/40">
-                <CardContent className="flex items-center justify-between gap-4 py-1">
+              <Card className="shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+                <CardContent className="flex items-center justify-between gap-4">
                   <div>
                     <p className="font-medium">{order.merchants.name}</p>
                     <p className="text-sm text-muted-foreground">

@@ -33,21 +33,21 @@ export default async function Home(props: PageProps<"/">) {
 
   return (
     <div>
-      <div className="border-b bg-gradient-to-b from-accent/60 to-background">
-        <div className="mx-auto w-full max-w-5xl px-4 py-10">
-          <h1 className="mb-1 text-3xl font-semibold tracking-tight">
+      <div className="border-b border-border/70 bg-gradient-to-b from-accent/50 via-accent/15 to-background">
+        <div className="mx-auto w-full max-w-5xl px-4 py-16 sm:py-24">
+          <h1 className="mb-2 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
             Lojas perto de você
           </h1>
-          <p className="mb-5 text-muted-foreground">
+          <p className="mb-8 max-w-md text-base text-muted-foreground sm:text-lg">
             Escolha uma loja da sua cidade e monte seu pedido.
           </p>
-          <div className="max-w-md">
+          <div className="max-w-lg">
             <MarketplaceSearch />
           </div>
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+      <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-12 sm:py-16">
         {query ? (
           !hasMerchants && !hasProducts ? (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
@@ -59,20 +59,24 @@ export default async function Home(props: PageProps<"/">) {
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-10">
               {hasMerchants && (
                 <section>
-                  <h2 className="mb-3 text-lg font-medium">Lojas</h2>
+                  <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+                    Lojas
+                  </h2>
                   <MerchantGrid merchants={merchants!} />
                 </section>
               )}
               {hasProducts && (
                 <section>
-                  <h2 className="mb-3 text-lg font-medium">Produtos</h2>
+                  <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+                    Produtos
+                  </h2>
                   <div className="flex flex-col gap-3">
                     {products.map((product) => (
                       <Link key={product.id} href={`/loja/${product.merchants.slug}`}>
-                        <Card className="transition-colors hover:border-primary/40">
+                        <Card className="transition-all hover:-translate-y-0.5 hover:shadow-md">
                           <CardContent className="flex items-center gap-4">
                             {product.image_url ? (
                               // eslint-disable-next-line @next/next/no-img-element
@@ -123,24 +127,26 @@ export default async function Home(props: PageProps<"/">) {
 
 function MerchantGrid({ merchants }: { merchants: Merchant[] }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {merchants.map((merchant) => (
         <Link key={merchant.id} href={`/loja/${merchant.slug}`}>
-          <Card className="h-full gap-3 overflow-hidden pt-0 transition-all hover:-translate-y-0.5 hover:shadow-md">
-            {merchant.logo_url ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={merchant.logo_url}
-                alt={merchant.name}
-                className="h-24 w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-24 items-center justify-center bg-gradient-to-br from-primary/15 to-accent">
-                <StoreIcon className="size-8 text-primary" />
-              </div>
-            )}
-            <CardContent className="flex flex-col gap-2">
-              <h2 className="font-semibold">{merchant.name}</h2>
+          <Card className="h-full gap-3 overflow-hidden pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <div className="overflow-hidden">
+              {merchant.logo_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={merchant.logo_url}
+                  alt={merchant.name}
+                  className="h-36 w-full object-cover transition-transform duration-300 group-hover/card:scale-105"
+                />
+              ) : (
+                <div className="flex h-36 items-center justify-center bg-gradient-to-br from-primary/15 to-accent">
+                  <StoreIcon className="size-9 text-primary" />
+                </div>
+              )}
+            </div>
+            <CardContent className="flex flex-col gap-2 pt-1 pb-1">
+              <h2 className="text-lg font-semibold tracking-tight">{merchant.name}</h2>
               <p className="flex items-center gap-1 text-sm text-muted-foreground">
                 <MapPin className="size-3.5" />
                 {merchant.city}

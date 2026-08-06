@@ -27,14 +27,14 @@ export default function CarrinhoPage() {
 
   return (
     <div>
-      <h1 className="mb-1 text-2xl font-semibold">Seu carrinho</h1>
+      <h1 className="mb-1 text-2xl font-semibold tracking-tight">Seu carrinho</h1>
       <p className="mb-6 text-muted-foreground">{merchantName}</p>
 
       <div className="flex flex-col gap-3">
         {items.map((item) => (
           <div
             key={item.productId}
-            className="flex items-center justify-between gap-4 rounded-xl border bg-card p-3 shadow-sm"
+            className="flex items-center justify-between gap-4 rounded-xl border border-border/70 bg-card p-3.5 shadow-sm transition-shadow hover:shadow-md"
           >
             <div className="flex-1">
               <p className="font-medium">{item.name}</p>
@@ -74,17 +74,19 @@ export default function CarrinhoPage() {
 
       <Separator className="my-6" />
 
-      <div className="flex items-center justify-between text-lg font-medium">
-        <span>Subtotal</span>
-        <span className="tabular-nums">R$ {subtotal.toFixed(2)}</span>
-      </div>
-      <p className="mb-4 text-sm text-muted-foreground">
-        A taxa de entrega é calculada na próxima etapa.
-      </p>
+      <div className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
+        <div className="flex items-center justify-between text-lg font-semibold">
+          <span>Subtotal</span>
+          <span className="tabular-nums text-primary">R$ {subtotal.toFixed(2)}</span>
+        </div>
+        <p className="mt-1 mb-4 text-sm text-muted-foreground">
+          A taxa de entrega é calculada na próxima etapa.
+        </p>
 
-      <Button render={<Link href="/checkout" />} nativeButton={false} className="w-full" size="lg">
-        Continuar para o checkout
-      </Button>
+        <Button render={<Link href="/checkout" />} nativeButton={false} className="w-full" size="lg">
+          Continuar para o checkout
+        </Button>
+      </div>
     </div>
   );
 }
