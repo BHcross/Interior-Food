@@ -1,9 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
-import Link from "next/link";
-import { Lock, Mail } from "lucide-react";
-import { signIn, type AuthFormState } from "@/lib/actions/auth";
+import { Lock } from "lucide-react";
+import { updatePassword, type AuthFormState } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,8 +17,8 @@ import {
 
 const initialState: AuthFormState = {};
 
-export default function EntrarPage() {
-  const [state, formAction, pending] = useActionState(signIn, initialState);
+export default function RedefinirSenhaPage() {
+  const [state, formAction, pending] = useActionState(updatePassword, initialState);
 
   return (
     <div className="flex flex-1 items-center justify-center bg-gradient-to-b from-accent/60 to-background px-4 py-12">
@@ -32,35 +31,13 @@ export default function EntrarPage() {
 
         <Card className="shadow-md">
           <CardHeader>
-            <CardTitle className="text-xl">Entrar</CardTitle>
-            <CardDescription>Acesse sua conta para continuar.</CardDescription>
+            <CardTitle className="text-xl">Nova senha</CardTitle>
+            <CardDescription>Escolha uma nova senha para sua conta.</CardDescription>
           </CardHeader>
           <CardContent>
             <form action={formAction} className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <Label htmlFor="email">E-mail</Label>
-                <div className="relative">
-                  <Mail className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    className="pl-8"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Senha</Label>
-                  <Link
-                    href="/esqueci-senha"
-                    className="text-xs font-medium text-primary underline-offset-4 hover:underline"
-                  >
-                    Esqueceu sua senha?
-                  </Link>
-                </div>
+                <Label htmlFor="password">Nova senha</Label>
                 <div className="relative">
                   <Lock className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -68,22 +45,32 @@ export default function EntrarPage() {
                     name="password"
                     type="password"
                     required
-                    autoComplete="current-password"
+                    minLength={6}
+                    autoComplete="new-password"
+                    className="pl-8"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="confirmPassword">Confirmar nova senha</Label>
+                <div className="relative">
+                  <Lock className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    required
+                    minLength={6}
+                    autoComplete="new-password"
                     className="pl-8"
                   />
                 </div>
               </div>
               {state.error && <p className="text-sm text-destructive">{state.error}</p>}
               <Button type="submit" disabled={pending} className="w-full" size="lg">
-                {pending ? "Entrando..." : "Entrar"}
+                {pending ? "Salvando..." : "Salvar nova senha"}
               </Button>
             </form>
-            <p className="mt-4 text-center text-sm text-muted-foreground">
-              Não tem conta?{" "}
-              <Link href="/cadastro" className="font-medium text-primary underline-offset-4 hover:underline">
-                Cadastre-se
-              </Link>
-            </p>
           </CardContent>
         </Card>
       </div>
