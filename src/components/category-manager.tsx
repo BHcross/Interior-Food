@@ -17,7 +17,7 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
         {categories.map((category) => (
           <span
             key={category.id}
-            className="flex items-center gap-2 rounded-full border px-3 py-1 text-sm"
+            className="flex items-center gap-2 rounded-full border border-border/70 bg-muted/40 px-3 py-1 text-sm"
           >
             {category.name}
             <button

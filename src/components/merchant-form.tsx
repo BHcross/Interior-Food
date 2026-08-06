@@ -57,7 +57,7 @@ export function MerchantForm({ merchant }: { merchant: Merchant | null }) {
             <img
               src={logoUrl}
               alt="Logo da loja"
-              className="size-20 shrink-0 rounded-xl border object-cover"
+              className="size-20 shrink-0 rounded-xl border border-border/70 object-cover shadow-sm"
             />
           ) : (
             <div className="flex size-20 shrink-0 items-center justify-center rounded-xl border border-dashed bg-muted">
@@ -121,10 +121,10 @@ export function MerchantForm({ merchant }: { merchant: Merchant | null }) {
           <button
             type="button"
             onClick={() => setDeliveryMode("platform")}
-            className={`flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition-colors ${
+            className={`flex flex-col items-start gap-1 rounded-xl border p-3.5 text-left transition-all ${
               deliveryMode === "platform"
-                ? "border-primary bg-primary/10"
-                : "hover:bg-muted"
+                ? "border-primary bg-primary/10 shadow-sm"
+                : "border-border/70 hover:bg-muted"
             }`}
           >
             <span className="flex items-center gap-1.5 font-medium">
@@ -139,8 +139,10 @@ export function MerchantForm({ merchant }: { merchant: Merchant | null }) {
           <button
             type="button"
             onClick={() => setDeliveryMode("own")}
-            className={`flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition-colors ${
-              deliveryMode === "own" ? "border-primary bg-primary/10" : "hover:bg-muted"
+            className={`flex flex-col items-start gap-1 rounded-xl border p-3.5 text-left transition-all ${
+              deliveryMode === "own"
+                ? "border-primary bg-primary/10 shadow-sm"
+                : "border-border/70 hover:bg-muted"
             }`}
           >
             <span className="flex items-center gap-1.5 font-medium">

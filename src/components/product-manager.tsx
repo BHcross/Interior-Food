@@ -78,7 +78,7 @@ export function ProductManager({
       ) : (
         <div className="flex flex-col gap-2">
           {products.map((product) => (
-            <Card key={product.id}>
+            <Card key={product.id} className="shadow-sm">
               <CardContent className="flex items-center gap-4 py-3">
                 {product.image_url && (
                   // eslint-disable-next-line @next/next/no-img-element

@@ -39,10 +39,12 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
     .maybeSingle();
 
   return (
-    <div className="mx-auto w-full max-w-2xl flex-1 px-4 py-8">
+    <div className="mx-auto w-full max-w-2xl flex-1 px-4 py-8 sm:py-10">
       <ClearCartIfMatches merchantId={order.merchant_id} />
 
-      <h1 className="mb-1 text-2xl font-semibold">Pedido em {order.merchants.name}</h1>
+      <h1 className="mb-1 text-2xl font-semibold tracking-tight">
+        Pedido em {order.merchants.name}
+      </h1>
       <p className="mb-6 text-sm text-muted-foreground">Pedido #{order.id.slice(0, 8)}</p>
 
       <OrderStatusLive orderId={order.id} initialStatus={order.status} />
@@ -59,8 +61,8 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
       )}
 
       {order.courier_id && order.status === "out_for_delivery" ? (
-        <div className="mt-6">
-          <h2 className="mb-2 text-sm font-medium text-muted-foreground">
+        <div className="mt-8">
+          <h2 className="mb-3 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
             Acompanhe o entregador
           </h2>
           <DeliveryTrackingMap
@@ -75,8 +77,8 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
       ) : (
         order.merchants.latitude !== null &&
         order.merchants.longitude !== null && (
-          <div className="mt-6">
-            <h2 className="mb-2 text-sm font-medium text-muted-foreground">
+          <div className="mt-8">
+            <h2 className="mb-3 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
               Localização da loja
             </h2>
             <StoreMap
@@ -89,7 +91,7 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
         )
       )}
 
-      <Card className="mt-6">
+      <Card className="mt-8 shadow-sm">
         <CardHeader>
           <CardTitle className="text-base">Itens</CardTitle>
         </CardHeader>

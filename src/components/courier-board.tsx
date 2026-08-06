@@ -109,7 +109,9 @@ export function CourierBoard({
       <LocationSharing active={hasActiveDelivery} />
 
       <section>
-        <h2 className="mb-3 text-lg font-medium">Minhas entregas</h2>
+        <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+          Minhas entregas
+        </h2>
         {mine.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             Você ainda não aceitou nenhuma entrega.
@@ -117,7 +119,7 @@ export function CourierBoard({
         ) : (
           <div className="flex flex-col gap-3">
             {mine.map((order) => (
-              <Card key={order.id}>
+              <Card key={order.id} className="shadow-sm">
                 <CardContent className="flex flex-col gap-2">
                   <div className="flex items-center justify-between">
                     <span className="flex items-center gap-1.5 font-medium">
@@ -153,13 +155,15 @@ export function CourierBoard({
       </section>
 
       <section>
-        <h2 className="mb-3 text-lg font-medium">Entregas disponíveis</h2>
+        <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+          Entregas disponíveis
+        </h2>
         {available.length === 0 ? (
           <p className="text-sm text-muted-foreground">Nenhuma entrega disponível agora.</p>
         ) : (
           <div className="flex flex-col gap-3">
             {available.map((order) => (
-              <Card key={order.id}>
+              <Card key={order.id} className="shadow-sm">
                 <CardContent className="flex items-center justify-between gap-4">
                   <div>
                     <p className="flex items-center gap-1.5 font-medium">

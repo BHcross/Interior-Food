@@ -36,5 +36,13 @@ export default async function PedidosPage() {
     .order("created_at", { ascending: false })
     .returns<(Order & { order_items: OrderItem[] })[]>();
 
-  return <OrdersBoard merchantId={merchant.id} initialOrders={orders ?? []} />;
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">Pedidos</h1>
+        <p className="text-sm text-muted-foreground">Gerencie os pedidos recebidos pela loja.</p>
+      </div>
+      <OrdersBoard merchantId={merchant.id} initialOrders={orders ?? []} />
+    </div>
+  );
 }

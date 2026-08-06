@@ -43,7 +43,7 @@ export default async function PainelPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
-        <h1 className="text-2xl font-semibold">{merchant.name}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{merchant.name}</h1>
         <Badge variant={merchant.status === "approved" ? "default" : "secondary"}>
           {merchant.status === "approved" ? "Aprovada" : "Aguardando aprovação"}
         </Badge>
@@ -56,12 +56,12 @@ export default async function PainelPage() {
         </p>
       )}
 
-      <Card>
+      <Card className="shadow-sm">
         <CardHeader>
           <CardTitle className="text-base">Pedidos novos</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
-          <span className="text-3xl font-semibold">{pendingCount ?? 0}</span>
+          <span className="text-3xl font-semibold tabular-nums">{pendingCount ?? 0}</span>
           <Button render={<Link href="/painel/pedidos" />} nativeButton={false} variant="outline">
             Ver pedidos
           </Button>

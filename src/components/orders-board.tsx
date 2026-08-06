@@ -100,7 +100,11 @@ export function OrdersBoard({
   }
 
   if (orders.length === 0) {
-    return <p className="text-muted-foreground">Nenhum pedido recebido ainda.</p>;
+    return (
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
+        <p className="text-muted-foreground">Nenhum pedido recebido ainda.</p>
+      </div>
+    );
   }
 
   return (
@@ -110,7 +114,7 @@ export function OrdersBoard({
         const isFinal = order.status === "delivered" || order.status === "cancelled";
 
         return (
-          <Card key={order.id}>
+          <Card key={order.id} className="shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-base">
                 Pedido #{order.id.slice(0, 8)}
