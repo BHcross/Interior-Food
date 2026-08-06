@@ -36,30 +36,32 @@ export default async function LojaPage(props: PageProps<"/loja/[slug]">) {
 
   return (
     <div>
-      <div className="border-b bg-gradient-to-br from-primary/10 to-accent/40">
-        <div className="mx-auto w-full max-w-3xl px-4 py-8">
+      <div className="border-b border-border/70 bg-gradient-to-br from-primary/10 via-accent/25 to-background">
+        <div className="mx-auto w-full max-w-3xl px-4 py-10 sm:py-14">
           <div className="flex items-center gap-4">
             {merchant.logo_url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={merchant.logo_url}
                 alt={merchant.name}
-                className="size-14 shrink-0 rounded-xl object-cover"
+                className="size-16 shrink-0 rounded-2xl object-cover shadow-md ring-4 ring-background sm:size-20"
               />
             ) : (
-              <div className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-primary/15">
-                <StoreIcon className="size-6 text-primary" />
+              <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-primary/15 shadow-md ring-4 ring-background sm:size-20">
+                <StoreIcon className="size-7 text-primary" />
               </div>
             )}
             <div>
-              <h1 className="text-2xl font-semibold">{merchant.name}</h1>
+              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+                {merchant.name}
+              </h1>
               <p className="flex items-center gap-1 text-muted-foreground">
                 <MapPin className="size-3.5" />
                 {merchant.city}
               </p>
             </div>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-5 flex flex-wrap gap-2">
             <Badge variant="secondary" className="gap-1">
               <Truck className="size-3" />
               Entrega: R$ {merchant.delivery_fee.toFixed(2)}
@@ -74,10 +76,12 @@ export default async function LojaPage(props: PageProps<"/loja/[slug]">) {
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
+      <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:py-12">
         {merchant.latitude !== null && merchant.longitude !== null && (
-          <div className="mb-8">
-            <h2 className="mb-3 text-lg font-medium">Localização</h2>
+          <div className="mb-10">
+            <h2 className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+              Localização
+            </h2>
             <StoreMap
               latitude={merchant.latitude}
               longitude={merchant.longitude}

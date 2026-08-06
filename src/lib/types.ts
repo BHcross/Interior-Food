@@ -1,4 +1,4 @@
-export type Role = "customer" | "merchant" | "courier";
+export type Role = "customer" | "merchant" | "courier" | "admin";
 
 export type OrderStatus =
   | "pending"
@@ -32,6 +32,7 @@ export interface Profile {
   role: Role;
   full_name: string | null;
   phone: string | null;
+  banned_at: string | null;
   created_at: string;
 }
 
@@ -45,7 +46,7 @@ export interface Merchant {
   phone: string | null;
   opening_hours: string | null;
   delivery_fee: number;
-  status: "pending" | "approved";
+  status: "pending" | "approved" | "banned";
   latitude: number | null;
   longitude: number | null;
   logo_url: string | null;
