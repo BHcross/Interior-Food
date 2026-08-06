@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { updateOrderStatus } from "@/lib/actions/orders";
+import { OrderChat } from "@/components/order-chat";
 import {
   ORDER_STATUS_FLOW,
   ORDER_STATUS_LABELS,
@@ -146,6 +147,13 @@ export function OrdersBoard({
                   {order.notes}
                 </p>
               )}
+
+              <div className="flex flex-wrap gap-2">
+                <OrderChat orderId={order.id} channel="customer_merchant" title="cliente" />
+                {order.courier_id && (
+                  <OrderChat orderId={order.id} channel="merchant_courier" title="entregador" />
+                )}
+              </div>
 
               {!isFinal && (
                 <div className="mt-2 flex gap-2">

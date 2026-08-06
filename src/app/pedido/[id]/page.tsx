@@ -5,6 +5,7 @@ import { OrderStatusLive } from "@/components/order-status-live";
 import { ClearCartIfMatches } from "@/components/clear-cart-if-matches";
 import { StoreMap } from "@/components/store-map";
 import { DeliveryTrackingMap } from "@/components/delivery-tracking-map";
+import { OrderChat } from "@/components/order-chat";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -38,6 +39,13 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
       <p className="mb-6 text-sm text-muted-foreground">Pedido #{order.id.slice(0, 8)}</p>
 
       <OrderStatusLive orderId={order.id} initialStatus={order.status} />
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        <OrderChat orderId={order.id} channel="customer_merchant" title="a loja" />
+        {order.courier_id && (
+          <OrderChat orderId={order.id} channel="customer_courier" title="o entregador" />
+        )}
+      </div>
 
       {order.courier_id && order.status === "out_for_delivery" ? (
         <div className="mt-6">

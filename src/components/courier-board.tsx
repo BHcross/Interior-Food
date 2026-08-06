@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { LocationSharing } from "@/components/location-sharing";
+import { OrderChat } from "@/components/order-chat";
 
 type OrderWithMerchant = Order & { merchants: { name: string; address: string | null } };
 
@@ -115,6 +116,10 @@ export function CourierBoard({
                     <MapPin className="size-3.5" />
                     {order.delivery_address}
                   </p>
+                  <div className="flex flex-wrap gap-2">
+                    <OrderChat orderId={order.id} channel="merchant_courier" title="loja" />
+                    <OrderChat orderId={order.id} channel="customer_courier" title="cliente" />
+                  </div>
                   {order.status === "preparing" ? (
                     <Button size="sm" onClick={() => handleAdvance(order.id, "out_for_delivery")}>
                       Saí para entrega

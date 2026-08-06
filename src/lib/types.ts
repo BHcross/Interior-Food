@@ -113,3 +113,14 @@ export interface CartItem {
   quantity: number;
   notes?: string;
 }
+
+export type ChatChannel = "customer_merchant" | "customer_courier" | "merchant_courier";
+
+export interface OrderMessage {
+  id: string;
+  order_id: string;
+  channel: ChatChannel;
+  sender_id: string;
+  body: string;
+  created_at: string;
+}
