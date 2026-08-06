@@ -117,3 +117,27 @@ export async function updateOrderStatus(orderId: string, status: string) {
   const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
   return { error: error?.message };
 }
+
+export interface ConfirmDeliveryResult {
+  error?: string;
+}
+
+export async function confirmDeliveryByCustomer(
+  orderId: string,
+): Promise<ConfirmDeliveryResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { error: "É preciso entrar na sua conta." };
+
+  const { data, error } = await supabase.rpc("confirm_delivery_by_customer", {
+    p_order_id: orderId,
+  });
+
+  if (error) return { error: error.message };
+  if (!data) return { error: "Não foi possível confirmar a entrega." };
+
+  return {};
+}

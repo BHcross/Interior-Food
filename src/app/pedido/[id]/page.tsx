@@ -6,6 +6,7 @@ import { ClearCartIfMatches } from "@/components/clear-cart-if-matches";
 import { StoreMap } from "@/components/store-map";
 import { DeliveryTrackingMap } from "@/components/delivery-tracking-map";
 import { OrderChat } from "@/components/order-chat";
+import { DeliveryCodeCard } from "@/components/delivery-code-card";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -31,6 +32,12 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
     .eq("order_id", id)
     .returns<OrderItem[]>();
 
+  const { data: deliveryCode } = await supabase
+    .from("order_delivery_codes")
+    .select("code")
+    .eq("order_id", id)
+    .maybeSingle();
+
   return (
     <div className="mx-auto w-full max-w-2xl flex-1 px-4 py-8">
       <ClearCartIfMatches merchantId={order.merchant_id} />
@@ -46,6 +53,10 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
           <OrderChat orderId={order.id} channel="customer_courier" title="o entregador" />
         )}
       </div>
+
+      {order.status === "out_for_delivery" && deliveryCode && (
+        <DeliveryCodeCard orderId={order.id} code={deliveryCode.code} />
+      )}
 
       {order.courier_id && order.status === "out_for_delivery" ? (
         <div className="mt-6">

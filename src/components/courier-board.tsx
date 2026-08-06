@@ -4,10 +4,15 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { MapPin, Store } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { claimOrder, updateCourierOrderStatus } from "@/lib/actions/courier";
+import {
+  claimOrder,
+  confirmDeliveryWithCode,
+  updateCourierOrderStatus,
+} from "@/lib/actions/courier";
 import type { Order } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { LocationSharing } from "@/components/location-sharing";
 import { OrderChat } from "@/components/order-chat";
@@ -77,13 +82,24 @@ export function CourierBoard({
     refetch();
   }
 
-  async function handleAdvance(orderId: string, next: "out_for_delivery" | "delivered") {
-    const result = await updateCourierOrderStatus(orderId, next);
+  async function handleAdvance(orderId: string) {
+    const result = await updateCourierOrderStatus(orderId, "out_for_delivery");
     if (result.error) {
       toast.error("Não foi possível atualizar a entrega.");
       return;
     }
     refetch();
+  }
+
+  async function handleConfirmDelivery(orderId: string, code: string) {
+    const result = await confirmDeliveryWithCode(orderId, code);
+    if (result.error) {
+      toast.error(result.error);
+      return false;
+    }
+    toast.success("Entrega confirmada!");
+    refetch();
+    return true;
   }
 
   const hasActiveDelivery = mine.some((o) => o.status === "out_for_delivery");
@@ -121,13 +137,13 @@ export function CourierBoard({
                     <OrderChat orderId={order.id} channel="customer_courier" title="cliente" />
                   </div>
                   {order.status === "preparing" ? (
-                    <Button size="sm" onClick={() => handleAdvance(order.id, "out_for_delivery")}>
+                    <Button size="sm" onClick={() => handleAdvance(order.id)}>
                       Saí para entrega
                     </Button>
                   ) : (
-                    <Button size="sm" onClick={() => handleAdvance(order.id, "delivered")}>
-                      Entreguei
-                    </Button>
+                    <DeliveryCodeForm
+                      onConfirm={(code) => handleConfirmDelivery(order.id, code)}
+                    />
                   )}
                 </CardContent>
               </Card>
@@ -165,5 +181,35 @@ export function CourierBoard({
         )}
       </section>
     </div>
+  );
+}
+
+function DeliveryCodeForm({ onConfirm }: { onConfirm: (code: string) => Promise<boolean> }) {
+  const [code, setCode] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    const ok = await onConfirm(code);
+    setSubmitting(false);
+    if (ok) setCode("");
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex items-center gap-2">
+      <Input
+        value={code}
+        onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 4))}
+        placeholder="Código de 4 dígitos"
+        inputMode="numeric"
+        maxLength={4}
+        className="w-40"
+        required
+      />
+      <Button type="submit" size="sm" disabled={submitting || code.length !== 4}>
+        Confirmar entrega
+      </Button>
+    </form>
   );
 }
