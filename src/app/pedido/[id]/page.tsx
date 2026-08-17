@@ -56,8 +56,12 @@ export default async function PedidoPage(props: PageProps<"/pedido/[id]">) {
         )}
       </div>
 
-      {order.status === "out_for_delivery" && deliveryCode && (
-        <DeliveryCodeCard orderId={order.id} code={deliveryCode.code} />
+      {deliveryCode && order.status !== "delivered" && order.status !== "cancelled" && (
+        <DeliveryCodeCard
+          orderId={order.id}
+          code={deliveryCode.code}
+          canConfirm={order.status === "out_for_delivery"}
+        />
       )}
 
       {order.courier_id && order.status === "out_for_delivery" ? (

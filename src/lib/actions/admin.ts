@@ -89,3 +89,34 @@ export async function deleteAccount(
   revalidatePath("/admin/contas");
   return { result: "deleted" };
 }
+
+export interface SendSupportReplyResult {
+  error?: string;
+}
+
+export async function sendAdminSupportReply(
+  userId: string,
+  body: string,
+): Promise<SendSupportReplyResult> {
+  if (!body.trim()) return { error: "Digite uma mensagem." };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user || !(await isCallerAdmin())) {
+    return { error: "Apenas administradores podem fazer isso." };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin.from("support_messages").insert({
+    user_id: userId,
+    sender_id: user.id,
+    body: body.trim(),
+  });
+
+  if (error) return { error: error.message };
+
+  revalidatePath(`/admin/suporte/${userId}`);
+  return {};
+}

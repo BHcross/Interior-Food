@@ -7,7 +7,15 @@ import { confirmDeliveryByCustomer } from "@/lib/actions/orders";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export function DeliveryCodeCard({ orderId, code }: { orderId: string; code: string }) {
+export function DeliveryCodeCard({
+  orderId,
+  code,
+  canConfirm,
+}: {
+  orderId: string;
+  code: string;
+  canConfirm: boolean;
+}) {
   const [confirming, setConfirming] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
 
@@ -35,15 +43,22 @@ export function DeliveryCodeCard({ orderId, code }: { orderId: string; code: str
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         <p className="text-sm text-muted-foreground">
-          Informe este código ao entregador quando ele chegar. Isso confirma que o
-          pedido foi entregue de verdade.
+          Guarde este código: você vai informar ele ao entregador quando o pedido
+          chegar. Isso confirma que o pedido foi entregue de verdade.
         </p>
         <p className="text-center text-3xl font-bold tracking-[0.3em] text-primary">
           {code}
         </p>
-        <Button onClick={handleConfirm} disabled={confirming} variant="outline">
-          {confirming ? "Confirmando..." : "Já recebi meu pedido"}
-        </Button>
+        {canConfirm ? (
+          <Button onClick={handleConfirm} disabled={confirming} variant="outline">
+            {confirming ? "Confirmando..." : "Já recebi meu pedido"}
+          </Button>
+        ) : (
+          <p className="text-center text-xs text-muted-foreground">
+            O botão para confirmar o recebimento aparece quando o pedido sair para
+            entrega.
+          </p>
+        )}
       </CardContent>
     </Card>
   );

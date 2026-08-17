@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardList, LayoutDashboard, ShoppingCart, Store, UtensilsCrossed, Users } from "lucide-react";
+import {
+  ClipboardList,
+  LayoutDashboard,
+  LifeBuoy,
+  ShoppingCart,
+  Store,
+  UtensilsCrossed,
+  Users,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ICONS = {
@@ -12,6 +20,7 @@ const ICONS = {
   orders: ClipboardList,
   cart: ShoppingCart,
   users: Users,
+  support: LifeBuoy,
 } as const;
 
 export interface SidebarNavItem {

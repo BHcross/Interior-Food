@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bike, ClipboardList, LogOut, ShieldCheck, Store } from "lucide-react";
+import { Bike, ClipboardList, LifeBuoy, LogOut, ShieldCheck, Store } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { signOut } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,16 @@ export async function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            render={<Link href="/ajuda" />}
+            nativeButton={false}
+            aria-label="Ajuda"
+          >
+            <LifeBuoy />
+          </Button>
+
           {!user && (
             <>
               <Button variant="ghost" render={<Link href="/entrar" />} nativeButton={false}>
