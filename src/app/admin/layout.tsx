@@ -5,6 +5,7 @@ import { SidebarNav, type SidebarNavItem } from "@/components/sidebar-nav";
 const NAV_ITEMS: SidebarNavItem[] = [
   { href: "/admin", label: "Visão geral", icon: "dashboard", exact: true },
   { href: "/admin/contas", label: "Contas", icon: "users" },
+  { href: "/admin/suporte", label: "Suporte", icon: "support" },
 ];
 
 export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
